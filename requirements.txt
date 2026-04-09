@@ -1,0 +1,7 @@
+Flask
+Flask-SQLAlchemy
+Flask-Login
+plotly
+matplotlib
+psycopg2-binary
+gunicorn

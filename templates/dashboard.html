@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="row g-3">
+    <div class="col-lg-4">
+      <div class="card shadow-sm border-0">
+        <div class="card-body">
+          <h4 class="mb-2">Add Daily Expense</h4>
+          <p class="text-muted mb-3">Total: <b>{{ grand_total }}</b></p>
+
+          <form method="POST" action="{{ url_for('add_expense') }}">
+            <div class="mb-3">
+              <label class="form-label">Category</label>
+              <input class="form-control" name="category" placeholder="Food, Rent, Travel..." required />
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Amount</label>
+              <input class="form-control" name="amount" type="number" min="0.01" step="0.01" placeholder="0.00" required />
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Date</label>
+              <input class="form-control" name="date" type="date" required />
+            </div>
+            <button type="submit" class="btn btn-dark w-100">Add Expense</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="card shadow-sm border-0 mt-3">
+        <div class="card-body">
+          <h5 class="mb-3">Recent Expenses</h5>
+          {% if expenses %}
+            <div class="table-responsive">
+              <table class="table table-sm align-middle">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Category</th>
+                    <th class="text-end">Amount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for exp in expenses[:10] %}
+                    <tr>
+                      <td>{{ exp.date }}</td>
+                      <td>{{ exp.category }}</td>
+                      <td class="text-end">{{ exp.amount }}</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          {% else %}
+            <p class="text-muted mb-0">No expenses yet. Pehle add karo.</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-8">
+      <div class="card shadow-sm border-0 mb-3">
+        <div class="card-body">
+          <h4 class="mb-3">Spending Analysis</h4>
+
+          {% if pie_div %}
+            <h6 class="text-muted mb-2">Pie Chart: Category Split</h6>
+            <div>
+              {{ pie_div|safe }}
+            </div>
+          {% else %}
+            <p class="text-muted mb-0">Charts tabhi generate honge jab expenses add ho.</p>
+          {% endif %}
+
+          {% if pie_img %}
+            <h6 class="text-muted mt-4 mb-2">Matplotlib Pie (PNG)</h6>
+            <img src="data:image/png;base64,{{ pie_img }}" class="img-fluid border rounded" alt="Matplotlib pie chart" />
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="card shadow-sm border-0">
+        <div class="card-body">
+          <h6 class="text-muted mb-2">Bar Chart: Monthly Trends</h6>
+          {% if bar_div %}
+            <div>
+              {{ bar_div|safe }}
+            </div>
+          {% else %}
+            <p class="text-muted mb-0">Monthly chart ke liye expenses add karo.</p>
+          {% endif %}
+
+          {% if bar_img %}
+            <h6 class="text-muted mt-4 mb-2">Matplotlib Bar (PNG)</h6>
+            <img src="data:image/png;base64,{{ bar_img }}" class="img-fluid border rounded" alt="Matplotlib bar chart" />
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
