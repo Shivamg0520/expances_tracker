@@ -10,7 +10,16 @@ import matplotlib
 matplotlib.use("Agg")  # Render charts without a GUI (works on servers too).
 import matplotlib.pyplot as plt
 import plotly.graph_objects as go
-from flask import Flask, Response, flash, redirect, render_template, request, url_for
+from flask import (
+    Flask,
+    Response,
+    flash,
+    redirect,
+    render_template,
+    request,
+    send_from_directory,
+    url_for,
+)
 from flask_login import (
     LoginManager,
     UserMixin,
@@ -47,6 +56,15 @@ db = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.login_view = "login"
 login_manager.init_app(app)
+
+
+@app.route("/favicon.ico")
+def favicon():
+    return send_from_directory(
+        os.path.join(app.root_path, "templates"),
+        "expance_logo.png",
+        mimetype="image/jpeg",
+    )
 
 
 class User(db.Model, UserMixin):
