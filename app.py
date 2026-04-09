@@ -62,7 +62,7 @@ login_manager.init_app(app)
 def favicon():
     return send_from_directory(
         os.path.join(app.root_path, "templates"),
-        "expance_logo.png",
+        "expance_logo.jpg",
         mimetype="image/jpeg",
     )
 
